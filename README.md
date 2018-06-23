@@ -15,3 +15,16 @@
 - Chatfuel
 - Botsify
 - ManyChat
+
+(Parse data, intent, action, params, context)
+
+### Facebook
+
+Dialogflow -> Facebook application -> Facebook page, Messenger
+
+### Heroku
+
+user sends message from facebook page or messenger app
+facebook app accepts message
+app on heroku 
+app on heroku sends message to dialogflow
