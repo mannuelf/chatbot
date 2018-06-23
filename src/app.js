@@ -3,7 +3,7 @@ const apiai = require('apiai')
 const config = require('../src/config')
 const express = require('express')
 const crypto = require('crypto')
-const bodyParser = require('request')
+const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 const uuid = require('uuid')
@@ -28,6 +28,33 @@ if (! config.SERVER_URL) {
 // express server
 app.set('port', (process.env.PORT || 5000))
 
+// app.use(bodyParser.json({
+//     verify: verifyRequestSignature
+// }))
+
+app.use(express.static('public'))
+
 app.listen(app.get('port'), () => {
     console.log('running server on port', app.get('port'))
-});
+})
+
+app.get('/', (req, res) => {
+    res.send('Hello world lets chit chat')  
+})
+
+app.get('webhook', (req, res) => {
+    console.log('requesting...')
+    if (req.query['hub.mode'] === 'subscribe' &&
+        req.query['hub.verify_token'] === config.FB_VERIFY_TOKEN) {
+        
+    }
+})
+
+const dialogFlowService = apiai(config.DIALOGFLOW_CLIENT_ACCESS_TOKEN, {
+    language: "EN",
+    requestSource: "fb"
+})
+
+
+
+
