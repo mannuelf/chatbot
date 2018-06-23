@@ -84,6 +84,36 @@ app.post('/webhook/', (req, res) => {
     }
 })
 
+function receivedMessage(event) {
+    let senderID = event.sender.id
+    let recipientID = event.recipient.id
+    let timeOfMessage = event.timestamp
+    let message = event.message
+
+    if (! sessionIds.has(senderID)) {
+        sessionIds.set(senderID, uuid.v1())
+    }
+    //console.log("Received message for user %d and page %d at %d with message:", senderID, recipientID, timeOfMessage);
+    //console.log(JSON.stringify(message));
+
+    let isEcho = message.is_echo
+    let messageId = message.id
+    let appId = message.app_id
+    let metadata = message.metadata
+
+    let messageText = message.text
+    let messageAttachments = message.attachments
+    let quickReply = message.quick_reply
+
+    if (isEcho) {
+        handleEcho(messageId, appId, metadata)
+        return
+    } else if (quickReply) {
+        handleQuickReply(senderID, quickReply, messageId)
+        return
+    }
+}
+
 const dialogFlowService = apiai(config.DIALOGFLOW_CLIENT_ACCESS_TOKEN, {
     language: "EN",
     requestSource: "fb"
