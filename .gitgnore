@@ -1,4 +1,6 @@
-dist/
-node_modules/
-token
+node_modules
+npm-debug.log
+
+*.env
+*.dev
 .DS_Store
