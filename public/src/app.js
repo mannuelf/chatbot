@@ -43,6 +43,16 @@ app.get('/', function (req, res) {
     res.send('Hello world lets chit chat');
 });
 
+app.get('webhook', function (req, res) {
+    console.log('requesting...');
+    if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === config.FB_VERIFY_TOKEN) {
+        res.status(200).send(req.query['hub.challenge']);
+    } else {
+        console.log('Failed validation. Make sure the validation tokens match.');
+        res.sendStatus(403);
+    }
+});
+
 var dialogFlowService = apiai(config.DIALOGFLOW_CLIENT_ACCESS_TOKEN, {
     language: "EN",
     requestSource: "fb"
