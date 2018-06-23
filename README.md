@@ -26,5 +26,5 @@ Dialogflow -> Facebook application -> Facebook page, Messenger
 
 user sends message from facebook page or messenger app
 facebook app accepts message
-app on heroku 
+app on heroku
 app on heroku sends message to dialogflow
