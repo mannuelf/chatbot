@@ -4,8 +4,9 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "start": "node ./src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
+      "start": "npm run build && node dist/app.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
     "node": "9.11.1",
