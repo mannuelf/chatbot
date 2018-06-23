@@ -1,16 +1,16 @@
 'use_strict'
 
-const apiai = require('apiai')
-const config = require('../src/config')
-const express = require('express')
-const crypto = require('crypto')
-const bodyParser = require('request')
-const request = require('request')
+import apiai from 'apiai';
+import config from '../src/config';
+import express from 'express';
+import crypto from 'crypto';
+import bodyParser from 'request';
+import request from 'request';
+import uuid from 'uuid';
 const app = express()
-const uuid = require('uuid')
 
 app.set('port', (process.env.PORT || 5000))
 
-app.listen(app.get('port'), function () {
+app.listen(app.get('port'), () => {
     console.log('running server on por', app.get('port'))
 });
