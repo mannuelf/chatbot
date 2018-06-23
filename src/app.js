@@ -54,7 +54,35 @@ app.get('webhook', (req, res) => {
     }
 })
 
-
+// Callbacks for messenger are POST'ed
+app.post('/webhook/', (req, res) => {
+    let data = req.body
+    console.log(data)
+    if (data.object == 'page') {
+        // iterate over each entry
+        data.entry.forEach((pageEntry) => {
+            let pageID = pageEntry.id
+            let timeOfEvent = pageEntry.time
+            // iterate over each messaging event
+            pageEntry.messaging.forEach((MessageEvent) => {
+                if (messagingEvent.optin) {
+                    receivedAuthentication(messagingEvent)
+                } else if (messageEvent.message) {
+                    receivedMessage(messageEvent)
+                } else if (messageEvent.postback) {
+                    receivedPostback(messagingEvent)
+                } else if (messageEvent.read) {
+                    receivedMessageRead(messageEvent)
+                } else if (messageEvent) {
+                    receivedAccountLink(messagingEvent)
+                } else {
+                    console.log("Webhook received unknown messagingEvent: ", messagingEvent)
+                }
+            })
+        })
+        res.sendStatus(200)
+    }
+})
 
 const dialogFlowService = apiai(config.DIALOGFLOW_CLIENT_ACCESS_TOKEN, {
     language: "EN",
