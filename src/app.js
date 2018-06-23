@@ -9,4 +9,8 @@ const request = require('request')
 const app = express()
 const uuid = require('uuid')
 
+app.set('port', (process.env.PORT || 5000))
 
+app.listen(app.get('port'), function () {
+    console.log('running server on por', app.get('port'))
+});
