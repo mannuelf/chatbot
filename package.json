@@ -2,9 +2,10 @@
   "name": "hero",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "start": "",
+      "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
     "node": "9.11.1",
