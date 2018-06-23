@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "start": "nodemon ./dist/app.js",
+    "build": "rimraf public/ && babel ./ --out-dir public/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
+    "start": "nodemon ./public/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
