@@ -125,7 +125,21 @@ function receivedMessage(event) {
     }
 }
 
+function handleQuickReply(senderID, quickReply, messageId) {
+    let quickReplyPayload = quickReply.payload
+    console.log('Quick reply for message %s with payload %s', messageId, quickReplyPayload)
+    // send payload to dialogFlow 
+    sendToDialogFlow(senderID, quickReplyPayload)
+}
 
+function handleEcho(messageId, appId, metadata) {
+    console.log('Received echo for message %s and app %d with metadata %s', messageId, appId, metadata)
+}
 
-
-
+function handleDialogFlowAction(sender, action, responseText, context, parameters) {
+    switch (action) {
+        default:
+            // handle action, just send back the text
+            sendTextMessage(sender, responseText)
+        }
+}
