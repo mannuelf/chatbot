@@ -8,6 +8,11 @@ const request = require('request')
 const app = express()
 const uuid = require('uuid')
 
+const dialogFlowService = apiai(config.DIALOGFLOW_CLIENT_ACCESS_TOKEN, {
+    language: "EN",
+    requestSource: "fb"
+})
+
 // Facebook messenger API
 if (! config.FB_PAGE_TOKEN) {
     throw new Error('missing FB_PAGE_TOKEN')
@@ -112,12 +117,14 @@ function receivedMessage(event) {
         handleQuickReply(senderID, quickReply, messageId)
         return
     }
+
+    if (messageText) {
+        sendToDialogFlow(senderID, messageText)
+    } else if (messageAttachments) {
+        handleMessageAttachments(messageAttachments, senderID)
+    }
 }
 
-const dialogFlowService = apiai(config.DIALOGFLOW_CLIENT_ACCESS_TOKEN, {
-    language: "EN",
-    requestSource: "fb"
-})
 
 
 

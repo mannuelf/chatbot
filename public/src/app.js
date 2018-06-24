@@ -58,7 +58,61 @@ app.get('webhook', function (req, res) {
 app.post('/webhook/', function (req, res) {
     var data = req.body;
     console.log(data);
+    if (data.object == 'page') {
+        // iterate over each entry
+        data.entry.forEach(function (pageEntry) {
+            var pageID = pageEntry.id;
+            var timeOfEvent = pageEntry.time;
+            // iterate over each messaging event
+            pageEntry.messaging.forEach(function (MessageEvent) {
+                if (messagingEvent.optin) {
+                    receivedAuthentication(messagingEvent);
+                } else if (messageEvent.message) {
+                    receivedMessage(messageEvent);
+                } else if (messageEvent.postback) {
+                    receivedPostback(messagingEvent);
+                } else if (messageEvent.read) {
+                    receivedMessageRead(messageEvent);
+                } else if (messageEvent) {
+                    receivedAccountLink(messagingEvent);
+                } else {
+                    console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+                }
+            });
+        });
+        res.sendStatus(200);
+    }
 });
+
+function receivedMessage(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfMessage = event.timestamp;
+    var message = event.message;
+
+    if (!sessionIds.has(senderID)) {
+        sessionIds.set(senderID, uuid.v1());
+    }
+    //console.log("Received message for user %d and page %d at %d with message:", senderID, recipientID, timeOfMessage);
+    //console.log(JSON.stringify(message));
+
+    var isEcho = message.is_echo;
+    var messageId = message.id;
+    var appId = message.app_id;
+    var metadata = message.metadata;
+
+    var messageText = message.text;
+    var messageAttachments = message.attachments;
+    var quickReply = message.quick_reply;
+
+    if (isEcho) {
+        handleEcho(messageId, appId, metadata);
+        return;
+    } else if (quickReply) {
+        handleQuickReply(senderID, quickReply, messageId);
+        return;
+    }
+}
 
 var dialogFlowService = apiai(config.DIALOGFLOW_CLIENT_ACCESS_TOKEN, {
     language: "EN",
