@@ -1,5 +1,5 @@
 
-const apiai = require('apiai')
+const dialogflow = require('apiai')
 const config = require('../src/config')
 const express = require('express')
 const crypto = require('crypto')
