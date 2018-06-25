@@ -1,1 +1,1 @@
-web: node public/src/app.js
+web: nodemon ./public/app.js
