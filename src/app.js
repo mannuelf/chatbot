@@ -83,8 +83,6 @@ app.post('/webhook/', function (req, res) {
     var data = req.body;
     console.log(JSON.stringify(data));
 
-
-
     // Make sure this is a page subscription
     if (data.object == 'page') {
         // Iterate over each entry
@@ -718,10 +716,10 @@ function receivedPostback(event) {
     // The 'payload' param is a developer-defined field which is set in a postback 
     // button for Structured Messages. 
     var payload = event.postback.payload;
-
+    console.log(payload);
     switch (payload) {
         default:
-            //unindentified payload
+            // unidentified payload
             sendTextMessage(senderID, "I'm not sure what you want. Can you be more specific?");
         break;
 
