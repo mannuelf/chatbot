@@ -9,24 +9,38 @@ const request = require('request');
 const app = express();
 const uuid = require('uuid');
 
-
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
     throw new Error('missing FB_PAGE_TOKEN');
 }
+
 if (!config.FB_VERIFY_TOKEN) {
     throw new Error('missing FB_VERIFY_TOKEN');
 }
+
 if (!config.DIALOGFLOW_CLIENT_ACCESS_TOKEN) {
     throw new Error('missing DIALOGFLOW_CLIENT_ACCESS_TOKEN');
 }
+
 if (!config.FB_APP_SECRET) {
     throw new Error('missing FB_APP_SECRET');
 }
+
 if (!config.SERVER_URL) { //used for ink to static files
     throw new Error('missing SERVER_URL');
 }
 
+if (!config.SENDGRID_API_KEY) {
+    throw new Error('missing SENDGRID_API_KEY');
+}
+
+if (!config.EMAIL_TO) {
+    throw new Error('missing EMAIL_TO');
+}
+
+if (!config.EMAIL_FROM) {
+    throw new Error('missing EMAIL_FROM');
+}
 
 
 app.set('port', (process.env.PORT || 5000))
@@ -923,6 +937,21 @@ function isDefined(obj) {
     }
 
     return obj != null;
+}
+
+function sendEmail(subject, content) {
+    // using SendGrid's Node.js Library
+    // https://github.com/sendgrid/sendgrid-nodejs
+    var sendgrid = require("sendgrid")(config.SENDGRID_API_KEY);
+    var email = new sendgrid.Email();
+
+    email.addTo(config.EMAIL_TO);
+    email.setFrom(config.EMAIL_FROM);
+    email.setSubject(subject);
+    email.setHtml(content);
+
+    sendgrid.send(email);
+    console.log('sending email...');
 }
 
 // Spin up the server
