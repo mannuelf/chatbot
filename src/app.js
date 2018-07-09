@@ -163,7 +163,7 @@ function receivedMessage(event) {
 
 
 function handleMessageAttachments(messageAttachments, senderID) {
-    //for now just reply
+    // for now just reply
     sendTextMessage(senderID, "Attachment received. Thank you.");
 }
 
@@ -182,6 +182,39 @@ function handleEcho(messageId, appId, metadata) {
 
 function handleApiAiAction(sender, action, responseText, contexts, parameters) {
     switch (action) {
+        case "detailed-application":
+            if (isDefined(contexts[0] && contexts[0].name === 'job_application' && contexts[0].parameters)) {
+                let phone_number = (isDefined(contexts[0].parameters['phone-number'])
+                    && contexts[0].parameters['phone-number'] != '' 
+                    ? contexts[0].parameters['phone-number']
+                    : '');
+
+                let user_name = (isDefined(contexts[0].parameters['phone-number'])
+                    && contexts[0].parameters['phone-number'] != '' 
+                    ? contexts[0].parameters['phone-number']
+                    : '');
+            }
+            sendTextMessage(sender, responseText);
+            break;
+        case "job-enquiry":
+            let replies = [
+                {
+                    "content_type": "text",
+                    "title": "Software Engineer",
+                    "payload": "Software Engineer"
+                },
+                {
+                    "content_type": "text",
+                    "title": "Fashion Buyer",
+                    "payload": "Fashion Buyer"
+                },
+                {
+                    "content_type": "text",
+                    "title": "Not Interested",
+                    "payload": "Not Interested"
+                },
+            ]
+            sendQuickReply(sender, responseText, replies);
         default:
             //unhandled action, just send back the text
             sendTextMessage(sender, responseText);
