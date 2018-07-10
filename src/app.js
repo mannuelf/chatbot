@@ -221,8 +221,8 @@ function handleApiAiAction(sender, action, responseText, contexts, parameters) {
                 ];
                 sendButtonMessage(sender, "What would you like to do next");
             }, 3000);
-
-        break;
+            sendTextMessage(sender, responseText);
+            break;
         case "detailed-application":
             if (isDefined(contexts[0] && contexts[0].name === 'job_application' && contexts[0].parameters)) {
                 let phone_number = (isDefined(contexts[0].parameters['phone-number'])
@@ -820,12 +820,16 @@ function receivedPostback(event) {
     // button for Structured Messages. 
     var payload = event.postback.payload;
     console.log(payload);
+    
     switch (payload) {
+        case 'CHAT':
+            // user wants to chat
+            sendTextMessage(senderID, "I love chatting too, Do you have any questions");
+            break;
         default:
             // unidentified payload
             sendTextMessage(senderID, "I'm not sure what you want. Can you be more specific?");
         break;
-
     }
 
     console.log("Received postback for user %d and page %d with payload '%s' " +
