@@ -196,6 +196,33 @@ function handleEcho(messageId, appId, metadata) {
 
 function handleApiAiAction(sender, action, responseText, contexts, parameters) {
     switch (action) {
+        case "faq-delivery":
+            sendTextMessage(sender, responseText);
+            sendTypingOns(sender);
+
+            // ask what the user wants to do next
+            setTimeout(function() {
+                let buttons = [
+                    {
+                        type: "web_url",
+                        url: "http://www.themwebs.me/articles",
+                        title: "Show me the money"
+                    },
+                    {
+                        type: "phone_number",
+                        url: "http://www.themwebs.me/articles",
+                        payload: "+27123456789"
+                    },
+                    {
+                        type: "postback",
+                        title: "Start Chatting",
+                        payload: "USER_DEFINED_PAYLOAD"
+                    }
+                ];
+                sendButtonMessage(sender, "What would you like to do next");
+            }, 3000);
+
+        break;
         case "detailed-application":
             if (isDefined(contexts[0] && contexts[0].name === 'job_application' && contexts[0].parameters)) {
                 let phone_number = (isDefined(contexts[0].parameters['phone-number'])
