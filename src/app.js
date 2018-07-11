@@ -30,9 +30,9 @@ if (!config.SERVER_URL) { //used for ink to static files
     throw new Error('missing SERVER_URL');
 }
 
-if (!config.SENDGRID_API_KEY) {
-    throw new Error('missing SENDGRID_API_KEY');
-}
+// if (!config.SENDGRID_API_KEY) {
+//     throw new Error('missing SENDGRID_API_KEY');
+// }
 
 if (!config.EMAIL_TO) {
     throw new Error('missing EMAIL_TO');
@@ -1012,7 +1012,7 @@ function isDefined(obj) {
 function sendEmail(subject, content) {
     // using SendGrid's Node.js Library
     // https://github.com/sendgrid/sendgrid-nodejs
-    var sendgrid = require("sendgrid")(config.SENDGRID_API_KEY);
+    // var sendgrid = require("sendgrid")(config.SENDGRID_API_KEY);
     var email = new sendgrid.Email();
 
     email.addTo(config.EMAIL_TO);

@@ -4,7 +4,7 @@ module.exports = {
     DIALOGFLOW_CLIENT_ACCESS_TOKEN: 'dbdff623b627463780c55314149d0d93',
     FB_APP_SECRET: '25964b076e999064f65e35623d13ac25',
     SERVER_URL: "https://nameless-temple-69420.herokuapp.com/webhook",
-    SENDGRID_API_KEY: "",
+    // SENDGRID_API_KEY: "ABCDEFG",
     EMAIL_TO: "test@sendgrid.com",
     EMAIL_FROM: "mannuel.ferreira@gmail.com",
     WEATHER_API_KEY: '956713f5126addaffff1f098a6fce150'
