@@ -820,8 +820,12 @@ function receivedPostback(event) {
     // button for Structured Messages. 
     var payload = event.postback.payload;
     console.log(payload);
-    
+
     switch (payload) {
+        case 'JOB_APPLY':
+            // get feedback with new 0x1F1E7,
+            sendToApiAi(senderID, "job openings");
+            break;
         case 'CHAT':
             // user wants to chat
             sendTextMessage(senderID, "I love chatting too, Do you have any questions");
