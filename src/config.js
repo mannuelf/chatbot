@@ -6,5 +6,6 @@ module.exports = {
     SERVER_URL: "https://nameless-temple-69420.herokuapp.com/webhook",
     SENDGRID_API_KEY: "",
     EMAIL_TO: "test@sendgrid.com",
-    EMAIL_FROM: "mannuel.ferreira@gmail.com"
+    EMAIL_FROM: "mannuel.ferreira@gmail.com",
+    WEATHER_API_KEY: '956713f5126addaffff1f098a6fce150'
 }
