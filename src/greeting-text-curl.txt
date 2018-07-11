@@ -1,0 +1,11 @@
+echo curl -X POST -H "Content-Type: application/json" -d '{
+  "greeting":[
+  {
+    "locale":"default",
+    "text":"Hi, Mannuel at your service!"
+  }, {
+    "locale":"en_US",
+    "text":"Hi, Mannuel at your service!"
+  }
+]
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAADCq3dAa3UBACZB14FZCZBcwQyYPmXWbiIFULk3tsm1KCIPQWybdCuZBi0BmUv84DiLp7TsVbPgvb3I4q12K7XNOhnONoerXFIEykWfu7XWs80TYmkU3KjZAaxZBIJlGfwf9CWGKqKYwgLAcmZBmaNNhTZBVpd1CoGTo4KILV1BhSuj1SNOcU3rZBZBGBJK4VsZCAZD"
