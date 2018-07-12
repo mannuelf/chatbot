@@ -254,47 +254,67 @@ function handleApiAiAction(sender, action, responseText, contexts, parameters) {
             sendTextMessage(sender, responseText);
             break;
         case "detailed-application":
-            if (isDefined(contexts[0] && contexts[0].name === 'job_application' && contexts[0].parameters)) {
+            if (isDefined(contexts[0] && contexts[0].name === 'job_application'
+                || contexts[0].name == 'job-application-details_dialog_context'
+                && contexts[0].parameters)) {
                 let phone_number = (isDefined(contexts[0].parameters['phone-number'])
-                    && contexts[0].parameters['phone-number'] != '' 
+                    && contexts[0].parameters['phone-number'] != ''
                     ? contexts[0].parameters['phone-number']
                     : '');
 
                 let user_name = (isDefined(contexts[0].parameters['user-name'])
-                    && contexts[0].parameters['user-name'] != '' 
+                    && contexts[0].parameters['user-name'] != ''
                     ? contexts[0].parameters['user-name']
                     : '');
                     
-                let previous_job = (isDefined(contexts[0].parameters['prevous-job'])
-                    && contexts[0].parameters['prevous-job'] != '' 
-                    ? contexts[0].parameters['prevous-job']
+                let previous_job = (isDefined(contexts[0].parameters['previous-job'])
+                    && contexts[0].parameters['previous-job'] != ''
+                    ? contexts[0].parameters['previous-job']
                     : '');
                     
-                let years_of_experience = (isDefined(contexts[0].parameters['prevous-job'])
-                    && contexts[0].parameters['prevous-job'] != '' 
-                    ? contexts[0].parameters['prevous-job']
+                let years_of_experience = (isDefined(contexts[0].parameters['years-experience'])
+                    && contexts[0].parameters['years-experience'] != ''
+                    ? contexts[0].parameters['years-experience']
                     : '');
                     
                 let job_vacancy = (isDefined(contexts[0].parameters['job-vacancy'])
-                    && contexts[0].parameters['job-vacancy'] != '' 
+                    && contexts[0].parameters['job-vacancy'] != ''
                     ? contexts[0].parameters['job-vacancy']
                     : '');
 
-                if (phone_number != ''
-                    && user_name != '' 
-                    && previous_job != '' 
-                    && years_of_experience != ''
-                    && job_vacancy != '') {
-                        let emailContent = 'A new job enquiry' 
+                if (phone_number == '' && user_name != ''
+                    && previous_job != '' && years_of_experience != '') {
+                    let replies = [
+                        {
+                            "content_type": "text",
+                            "title": "Less than 1 year",
+                            "payload": "Less than 1 year"
+                        },
+                        {
+                            "content_type": "text",
+                            "title": "Less than 10 years",
+                            "payload": "Less than 10 years"
+                        },
+                        {
+                            "content_type": "text",
+                            "title": "More than 10 years",
+                            "payload": "More than 10 years"
+                        }
+                    ];
+                } else if (phone_number != '' && user_name != '' && previous_job != '' 
+                    && years_of_experience != '' && job_vacancy != '') {
+                        let emailContent = 'A new job enquiry'
                             + user_name + ' for the job: ' + job_vacancy
                             + '<br/> Previous job position: ' + previous_job
                             + '<br/> Years of experience: ' + previous_job
                             + '<br/> Phone number: ' + phone_number + '.';
                         console.log('New Job Application', emailContent);
                         // sendEmail('New Job Application', emailContent);
+                        sendTextMessage(sender, responseText);
+                } else {
+                    sendTextMessage(sender, responseText);
                 }
             }
-            sendTextMessage(sender, responseText);
             break;
         case "job-enquiry":
             let replies = [
@@ -312,7 +332,7 @@ function handleApiAiAction(sender, action, responseText, contexts, parameters) {
                     "content_type": "text",
                     "title": "Not Interested",
                     "payload": "Not Interested"
-                },
+                }
             ]
             sendQuickReply(sender, responseText, replies);
         default:
