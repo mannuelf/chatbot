@@ -3,9 +3,18 @@ module.exports = {
     FB_VERIFY_TOKEN: 'my_chitChat-app-01',
     DIALOGFLOW_CLIENT_ACCESS_TOKEN: 'dbdff623b627463780c55314149d0d93',
     FB_APP_SECRET: '25964b076e999064f65e35623d13ac25',
-    SERVER_URL: "https://nameless-temple-69420.herokuapp.com/webhook",
+    SERVER_URL: 'https://nameless-temple-69420.herokuapp.com/webhook',
     // SENDGRID_API_KEY: "ABCDEFG",
-    EMAIL_TO: "test@sendgrid.com",
-    EMAIL_FROM: "mannuel.ferreira@gmail.com",
-    WEATHER_API_KEY: '956713f5126addaffff1f098a6fce150'
+    EMAIL_TO: 'test@sendgrid.com',
+    EMAIL_FROM: 'mannuel.ferreira@gmail.com',
+    WEATHER_API_KEY: '956713f5126addaffff1f098a6fce150',
+    PG_CONFIG: {
+        user: 'insert user here',
+        database: 'insert database here',
+        password: 'insert password here',
+        host: 'insert host here',
+        port: 5432,
+        max: 10,
+        idleTimeoutMillis: 30000,
+    },
 }
