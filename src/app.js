@@ -6,8 +6,11 @@ const express = require('express');
 const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const request = require('request');
+const pg = require('pg');
 const app = express();
 const uuid = require('uuid');
+
+pg.defaults.ssl = true;
 
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
@@ -853,7 +856,6 @@ function callSendAPI(messageData) {
         }
     });
 }
-
 
 
 /*
