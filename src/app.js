@@ -49,6 +49,10 @@ if (!config.WEATHER_API_KEY) {
     throw new Error('missing WEATHER_API_KEY');
 }
 
+if (!config.PG_CONFIG) {
+    throw new Error('missing PG_CONFIG')
+}
+
 app.set('port', (process.env.PORT || 5000))
 
 //verify request came from facebook
