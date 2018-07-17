@@ -13,43 +13,43 @@ const uuid = require('uuid');
 pg.defaults.ssl = true;
 
 // Messenger API parameters
-if (!config.FB_PAGE_TOKEN) {
+if (!process.env.FB_PAGE_TOKEN) {
     throw new Error('missing FB_PAGE_TOKEN');
 }
 
-if (!config.FB_VERIFY_TOKEN) {
+if (!process.env.FB_VERIFY_TOKEN) {
     throw new Error('missing FB_VERIFY_TOKEN');
 }
 
-if (!config.DIALOGFLOW_CLIENT_ACCESS_TOKEN) {
+if (!process.env.DIALOGFLOW_CLIENT_ACCESS_TOKEN) {
     throw new Error('missing DIALOGFLOW_CLIENT_ACCESS_TOKEN');
 }
 
-if (!config.FB_APP_SECRET) {
+if (!process.env.FB_APP_SECRET) {
     throw new Error('missing FB_APP_SECRET');
 }
 
-if (!config.SERVER_URL) { //used for ink to static files
+if (!process.env.SERVER_URL) { //used for ink to static files
     throw new Error('missing SERVER_URL');
 }
 
-// if (!config.SENDGRID_API_KEY) {
+// if (!process.env.SENDGRID_API_KEY) {
 //     throw new Error('missing SENDGRID_API_KEY');
 // }
 
-if (!config.EMAIL_TO) {
+if (!process.env.EMAIL_TO) {
     throw new Error('missing EMAIL_TO');
 }
 
-if (!config.EMAIL_FROM) {
+if (!process.env.EMAIL_FROM) {
     throw new Error('missing EMAIL_FROM');
 }
 
-if (!config.WEATHER_API_KEY) {
+if (!process.env.WEATHER_API_KEY) {
     throw new Error('missing WEATHER_API_KEY');
 }
 
-if (!config.PG_CONFIG) {
+if (!process.env.PG_CONFIG) {
     throw new Error('missing PG_CONFIG')
 }
 
@@ -74,7 +74,7 @@ app.use(bodyParser.json())
 
 
 
-const apiAiService = apiai(config.DIALOGFLOW_CLIENT_ACCESS_TOKEN, {
+const apiAiService = apiai(process.env.DIALOGFLOW_CLIENT_ACCESS_TOKEN, {
     language: "en",
     requestSource: "fb"
 });
@@ -88,7 +88,7 @@ app.get('/', function (req, res) {
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
     console.log("request");
-    if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === config.FB_VERIFY_TOKEN) {
+    if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === process.env.FB_VERIFY_TOKEN) {
         res.status(200).send(req.query['hub.challenge']);
     } else {
         console.error("Failed validation. Make sure the validation tokens match.");
@@ -212,7 +212,7 @@ function handleApiAiAction(sender, action, responseText, contexts, parameters) {
                 request({
                     url: 'http://api.openweathermap.org/data/2.5/weather',
                     qs: {
-                        appid: config.WEATHER_API_KEY,
+                        appid: process.env.WEATHER_API_KEY,
                         q: parameters['geo-city']
                     },
                     method: 'GET',
@@ -548,7 +548,7 @@ function sendGifMessage(recipientId) {
             attachment: {
                 type: "image",
                 payload: {
-                    url: config.SERVER_URL + "/assets/instagram_logo.gif"
+                    url: process.env.SERVER_URL + "/assets/instagram_logo.gif"
                 }
             }
         }
@@ -570,7 +570,7 @@ function sendAudioMessage(recipientId) {
             attachment: {
                 type: "audio",
                 payload: {
-                    url: config.SERVER_URL + "/assets/sample.mp3"
+                    url: process.env.SERVER_URL + "/assets/sample.mp3"
                 }
             }
         }
@@ -592,7 +592,7 @@ function sendVideoMessage(recipientId, videoName) {
             attachment: {
                 type: "video",
                 payload: {
-                    url: config.SERVER_URL + videoName
+                    url: process.env.SERVER_URL + videoName
                 }
             }
         }
@@ -614,7 +614,7 @@ function sendFileMessage(recipientId, fileName) {
             attachment: {
                 type: "file",
                 payload: {
-                    url: config.SERVER_URL + fileName
+                    url: process.env.SERVER_URL + fileName
                 }
             }
         }
@@ -787,7 +787,7 @@ function sendAccountLinking(recipientId) {
                     text: "Welcome. Link your account.",
                     buttons: [{
                         type: "account_link",
-                        url: config.SERVER_URL + "/authorize"
+                        url: process.env.SERVER_URL + "/authorize"
                     }]
                 }
             }
@@ -803,7 +803,7 @@ function greetUserText(userId) {
     request({
         uri: 'https://graph.facebook.com/v2.7/' + userId,
         qs: {
-            access_token: config.FB_PAGE_TOKEN
+            access_token: process.env.FB_PAGE_TOKEN
         }
 
     }, function (error, response, body) {
@@ -813,7 +813,7 @@ function greetUserText(userId) {
 
             if (user.first_name) {
 
-                var pool = new pg.Pool(config.PG_CONFIG);
+                var pool = new pg.Pool(process.env.PG_CONFIG);
                 pool.connect(function(err, client, done) {
                 
                 if (err) {
@@ -879,7 +879,7 @@ function callSendAPI(messageData) {
     request({
         uri: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
-            access_token: config.FB_PAGE_TOKEN
+            access_token: process.env.FB_PAGE_TOKEN
         },
         method: 'POST',
         json: messageData
@@ -1054,7 +1054,7 @@ function verifyRequestSignature(req, res, buf) {
         var method = elements[0];
         var signatureHash = elements[1];
 
-        var expectedHash = crypto.createHmac('sha1', config.FB_APP_SECRET)
+        var expectedHash = crypto.createHmac('sha1', process.env.FB_APP_SECRET)
             .update(buf)
             .digest('hex');
 
@@ -1079,11 +1079,11 @@ function isDefined(obj) {
 function sendEmail(subject, content) {
     // using SendGrid's Node.js Library
     // https://github.com/sendgrid/sendgrid-nodejs
-    // var sendgrid = require("sendgrid")(config.SENDGRID_API_KEY);
+    // var sendgrid = require("sendgrid")(process.env.SENDGRID_API_KEY);
     var email = new sendgrid.Email();
 
-    email.addTo(config.EMAIL_TO);
-    email.setFrom(config.EMAIL_FROM);
+    email.addTo(process.env.EMAIL_TO);
+    email.setFrom(process.env.EMAIL_FROM);
     email.setSubject(subject);
     email.setHtml(content);
 
